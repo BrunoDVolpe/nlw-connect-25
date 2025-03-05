@@ -2,8 +2,10 @@
 
 import { Button } from '@/components/button'
 import { InputField, InputIcon, InputRoot } from '@/components/input'
+import { subscribeToEvent } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod' //npm i zod @hookform/resolvers
 import { ArrowRight, Mail, User } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form' // npm i react-hook-form
 import { z } from 'zod' //npm i zod @hookform/resolvers
 
@@ -15,6 +17,9 @@ const subscriptionSchema = z.object({
 type SubscriptionSchema = z.infer<typeof subscriptionSchema>
 
 export function SubscriptionForm() {
+const router = useRouter() // importado de next/navigation que é o mais novo
+const searchParams = useSearchParams()
+
   const {
     register,
     handleSubmit,
@@ -28,9 +33,14 @@ export function SubscriptionForm() {
   //  email: string
   //}> Ele infere o que o formulário irá receber.
 
-  function onSubscribe(data: SubscriptionSchema) {
-    console.log(data)
+  async function onSubscribe({ name, email }: SubscriptionSchema) {
+    const referrer = searchParams.get('referrer')
+
+    const { subscriberId } = await subscribeToEvent({ name, email, referrer })
+
+    router.push(`/invite/${subscriberId}`)
   }
+
   return (
     <form
       className="bg-gray-700 border border-gray-600 rounded-2xl p-8 space-y-6 w-full md:max-w-[440px]"
