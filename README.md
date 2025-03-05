@@ -12,6 +12,7 @@ Ativar backend (api):
 
 Página de inscrição: http://localhost:3000/
 Página ranking - Usuário 1: http://localhost:3000/invite/c1042b00-f369-484f-90ec-fa67e7870456
+Docs: http://localhost:3333/docs
 
 ## Getting Started
 
